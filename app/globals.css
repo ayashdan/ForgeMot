@@ -55,6 +55,18 @@ h1 {
   transform: scale(0.97);
 }
 
+/* A faint blueprint-style grid behind the landing page hero, faded out
+   toward the edges so it reads as texture rather than a pattern fighting
+   the headline. Theme-aware via the --line token. */
+.bg-blueprint-grid {
+  background-image:
+    linear-gradient(rgb(var(--line) / 0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.7) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 15%, black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 15%, black 30%, transparent 85%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-in-up {
     animation: none !important;
