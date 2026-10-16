@@ -80,6 +80,11 @@ export default async function ProjectOverviewPage({ params }: { params: { id: st
             value={formatCurrency(f.pending_change_orders)}
             tone={f.pending_change_orders > 0 ? "warn" : "neutral"}
           />
+          <StatCard
+            label="Punch list open"
+            value={String(f.punch_list_open)}
+            tone={f.punch_list_open > 0 ? "warn" : "neutral"}
+          />
         </div>
       </section>
 

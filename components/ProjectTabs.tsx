@@ -13,6 +13,7 @@ const TABS = [
   { slug: "payments", label: "Payments" },
   { slug: "change-orders", label: "Change Orders" },
   { slug: "scope", label: "Trade Scope" },
+  { slug: "punch-list", label: "Punch List" },
 ];
 
 export default function ProjectTabs({ projectId }: { projectId: string }) {

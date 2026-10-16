@@ -10,6 +10,7 @@ const ACTION_ICON: Record<string, string> = {
   pending_change_order: "📝",
   backordered_material: "📦",
   pending_design: "🎨",
+  punch_list_item: "✅",
 };
 
 const SEVERITY_STYLE: Record<string, string> = {

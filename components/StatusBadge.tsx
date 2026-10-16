@@ -29,6 +29,10 @@ const STATUS_TONE: Record<string, keyof typeof TONE> = {
   paid: "good",
   approved: "good",
   rejected: "bad",
+  open: "warn",
+  low: "neutral",
+  medium: "warn",
+  high: "bad",
 };
 
 export default function StatusBadge({ status, label }: { status: string; label: string }) {

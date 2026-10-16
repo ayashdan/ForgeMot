@@ -44,6 +44,8 @@ Auth) · Google sign-in
     automatically).
   - **Change Orders** — submitted/approved amounts, balance remaining.
   - **Trade Scope** — scope of work by trade, assigned sub, dates, status.
+  - **Punch List** — final-walkthrough deficiencies by area, trade, and
+    priority, with who's assigned and when they were identified/completed.
 
 All the "auto-calculated" numbers (totals, balances, profit, floor area) are
 computed by the database, not the app, so they can't drift out of sync.

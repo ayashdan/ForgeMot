@@ -8,6 +8,8 @@ export type SubStatus = "not_started" | "in_progress" | "complete";
 export type PaymentStatus = "pending" | "invoiced" | "paid";
 export type ChangeOrderStatus = "pending" | "approved" | "rejected";
 export type TradeScopeStatus = "not_started" | "in_progress" | "complete";
+export type PunchListStatus = "open" | "in_progress" | "complete";
+export type PunchListPriority = "low" | "medium" | "high";
 export type Role = "admin" | "member";
 
 export interface Profile {
@@ -57,6 +59,7 @@ export interface ProjectFinancials {
   tasks_complete: number;
   materials_pending: number;
   design_items_pending: number;
+  punch_list_open: number;
 }
 
 export interface Task {
@@ -177,6 +180,21 @@ export interface TradeScopeItem {
   created_at: string;
 }
 
+export interface PunchListItem {
+  id: string;
+  project_id: string;
+  area: string | null;
+  item: string;
+  trade: string | null;
+  priority: PunchListPriority;
+  assigned_to: string | null;
+  status: PunchListStatus;
+  date_identified: string | null;
+  date_completed: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
 export const PROJECT_STATUS_LABEL: Record<ProjectStatus, string> = {
   active: "Active",
   on_hold: "On Hold",
@@ -228,4 +246,16 @@ export const TRADE_SCOPE_STATUS_LABEL: Record<TradeScopeStatus, string> = {
   not_started: "Not Started",
   in_progress: "In Progress",
   complete: "Complete",
+};
+
+export const PUNCH_LIST_STATUS_LABEL: Record<PunchListStatus, string> = {
+  open: "Open",
+  in_progress: "In Progress",
+  complete: "Complete",
+};
+
+export const PUNCH_LIST_PRIORITY_LABEL: Record<PunchListPriority, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
 };

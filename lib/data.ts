@@ -49,6 +49,7 @@ export async function getProjectsWithFinancials(): Promise<ProjectWithFinancials
         tasks_complete: 0,
         materials_pending: 0,
         design_items_pending: 0,
+        punch_list_open: 0,
       } satisfies ProjectFinancials),
   }));
 }
@@ -81,6 +82,7 @@ export async function getProjectWithFinancials(id: string): Promise<ProjectWithF
       tasks_complete: 0,
       materials_pending: 0,
       design_items_pending: 0,
+      punch_list_open: 0,
     },
   };
 }
@@ -90,7 +92,8 @@ export type ActionItemType =
   | "upcoming_task"
   | "pending_change_order"
   | "backordered_material"
-  | "pending_design";
+  | "pending_design"
+  | "punch_list_item";
 
 export interface ActionItem {
   type: ActionItemType;
@@ -122,7 +125,7 @@ export async function getActionItems(): Promise<ActionItem[]> {
   const todayStr = today.toISOString().slice(0, 10);
   const weekOut = new Date(today.getTime() + 7 * 86_400_000).toISOString().slice(0, 10);
 
-  const [{ data: tasks }, { data: changeOrders }, { data: materials }, { data: designs }] =
+  const [{ data: tasks }, { data: changeOrders }, { data: materials }, { data: designs }, { data: punchItems }] =
     await Promise.all([
       supabase
         .from("tasks")
@@ -146,6 +149,11 @@ export async function getActionItems(): Promise<ActionItem[]> {
         .select("id, project_id, item, area, status")
         .in("project_id", projectIds)
         .eq("status", "not_selected"),
+      supabase
+        .from("punch_list_items")
+        .select("id, project_id, item, area, priority, status")
+        .in("project_id", projectIds)
+        .neq("status", "complete"),
     ]);
 
   const items: ActionItem[] = [];
@@ -206,6 +214,20 @@ export async function getActionItems(): Promise<ActionItem[]> {
       projectName,
       detail: d.area ? `${d.area} — selection needed` : "Selection needed",
       href: `/projects/${d.project_id}/design`,
+    });
+  }
+
+  for (const pl of punchItems ?? []) {
+    const projectName = projectMap.get(pl.project_id);
+    if (!projectName) continue;
+    items.push({
+      type: "punch_list_item",
+      severity: pl.priority === "high" ? "high" : pl.priority === "medium" ? "medium" : "low",
+      title: pl.item,
+      projectId: pl.project_id,
+      projectName,
+      detail: pl.area ? `${pl.area} — punch list` : "Punch list",
+      href: `/projects/${pl.project_id}/punch-list`,
     });
   }
 
