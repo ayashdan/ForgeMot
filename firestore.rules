@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────────────────
+// BayRan — Cloud Firestore security rules
+//
+// Internal company tool: every signed-in (Google) user gets a profile
+// automatically (see src/contexts/AuthContext.jsx) and, once provisioned,
+// full read/write access to every project and its subcollections. There is
+// no per-role gating beyond "has a profile" — role is informational only.
+// If you need to keep sign-in restricted to your company's Google
+// Workspace, set that on the Google Cloud OAuth consent screen (not here).
+// ─────────────────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isTeamMember() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/profiles/$(request.auth.uid));
+    }
+
+    // One profile per signed-in user, self-provisioned on first sign-in.
+    match /profiles/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Projects, and every one-level subcollection under a project
+    // (tasks, design_selections, room_measurements, materials,
+    // subcontractors, customer_payments, change_orders, trade_scope,
+    // punch_list_items) — any team member has full access to all of it.
+    match /projects/{projectId} {
+      allow read, write: if isTeamMember();
+
+      match /{subcollection}/{docId} {
+        allow read, write: if isTeamMember();
+      }
+    }
+  }
+}
