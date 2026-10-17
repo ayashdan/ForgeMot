@@ -1,3 +1,17 @@
+> ⚠️ **Not the live app.** This repo's BayRan build (below) was an
+> independent rebuild done in a session that didn't know a more complete,
+> already-deployed version already existed. **The real, in-use BayRan app
+> lives in [`ayashdan/TrackFit`](https://github.com/ayashdan/TrackFit) on its
+> `main` branch**, deployed at the Firebase project `trackfit-c2f76`. Nothing
+> in this repo is connected to that deployment or its data. Treat this repo
+> as inactive/historical unless you deliberately decide to revive it.
+>
+> Also note: this repo's **GitHub default branch is still
+> `claude/ai-assistant-visually-impaired-ukk9t2`** (an old Phase-1 branch),
+> not `main` — anyone opening this repo without explicitly switching to
+> `main` will land on stale fitness-app content, not this file. Fix under
+> **Settings → Branches → Default branch**.
+
 # BayRan
 
 Construction project management for companies running multiple customer jobs
